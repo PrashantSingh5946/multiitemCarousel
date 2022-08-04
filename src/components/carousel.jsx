@@ -6,6 +6,8 @@ export default function Carousel() {
   let height = 165;
   let step = 2;
   let width = 300;
+  let transitionTime = 500;
+  let infiniteScroll = false;
   let background = "white";
 
   const carousel = useRef();
@@ -13,15 +15,37 @@ export default function Carousel() {
   const [index, setIndex] = useState(0);
   const data = [0, 1, 2, 3, 4, 5, 6];
 
-  const scrollLeft = () =>{
- setIndex((index)=>index>=step?index-step:index-step+data.length);
-  }
+  const scrollLeft = () => {
+    if (infiniteScroll) {
+      setIndex((index) =>
+        index >= step ? index - step : index - step + data.length
+      );
+    } else {
+      if(index>=step){
+        setIndex(index-step);
+      }
+      else{
+        setIndex(0);
+      }
+    }
+  };
 
-  const scrollRight = () =>{
-    setIndex((index)=>(index+step)%data.length);
-  }
+  const scrollRight = () => {
+    if (infiniteScroll) {
+      setIndex((index) => (index + step) % data.length);
+    }else{
+      if((index+step)>data.length){
+        setIndex(data.length-1);
+      }
+      else{
+        setIndex((index)=>index+step);
+      }
+    }
+  };
 
-  useEffect(()=>{carousel.current.scrollTo(index*width,0)},[index]);
+  useEffect(() => {
+    carousel.current.scrollTo(index * width, 0);
+  }, [index]);
   return (
     <div
       className={css`
