@@ -6,13 +6,14 @@ export default function Slide(props) {
     <div
       className={css`
         min-width: 280px;
-        height: 140px;
+        height: 200px;
         background: red;
-        margin:30px;
+        margin:0px 10px;
         border: 2px solid black;
         display:flex;
         justify-content:center;
         align-items:center;
+        border-radius: 4px;
       `}
     >
       {props.data??"Nothing"}

@@ -3,7 +3,7 @@ import { css } from "@emotion/css";
 import Slide from "./slide";
 
 export default function Carousel() {
-  let height = 220;
+  let height = 165;
   let step = 1;
   let padding = 10;
   let width = 300;
@@ -16,7 +16,7 @@ export default function Carousel() {
     <div
       className={css`
         font-size: 24px;
-        height: ${height}px;
+        max-height: ${height}px;
         background: ${background};
         display: flex;
         justify-content: center;
@@ -26,8 +26,12 @@ export default function Carousel() {
         overflow-x: scroll;
         overflow-y: hidden;
         margin: 10px;
-        padding: 40px;
+        padding: 30px 0px;
         justify-content: space-between;
+        ::-webkit-scrollbar {
+          display: none;
+        }
+        
       `}
     >
       <div
