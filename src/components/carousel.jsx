@@ -5,7 +5,6 @@ import Slide from "./slide";
 export default function Carousel() {
   let height = 165;
   let step = 2;
-  let padding = 10;
   let width = 300;
   let background = "white";
 
@@ -15,11 +14,11 @@ export default function Carousel() {
   const data = [0, 1, 2, 3, 4, 5, 6];
 
   const scrollLeft = () =>{
- setIndex((index)=>Math.abs(index-step+data.length)%data.length);
+ setIndex((index)=>index>=step?index-step:index-step+data.length);
   }
 
   const scrollRight = () =>{
-    setIndex((index)=>Math.abs(index+step+data.length)%data.length);
+    setIndex((index)=>(index+step)%data.length);
   }
 
   useEffect(()=>{carousel.current.scrollTo(index*width,0)},[index]);
