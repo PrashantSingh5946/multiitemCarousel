@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { css } from "@emotion/css";
 import Slide from "./slide";
 
@@ -9,9 +9,20 @@ export default function Carousel() {
   let width = 300;
   let background = "white";
 
+  const carousel = useRef();
+
   const [index, setIndex] = useState(0);
   const data = [0, 1, 2, 3, 4, 5, 6];
 
+  const scrollLeft = () =>{
+ setIndex((index)=>index-step%data.length);
+  }
+
+  const scrollRight = () =>{
+    setIndex((index)=>index+step%data.length);
+  }
+
+  useEffect(()=>{carousel.current.scrollTo(index*width,0)},[index]);
   return (
     <div
       className={css`
@@ -23,25 +34,43 @@ export default function Carousel() {
         align-items: center;
         max-width: 100vw;
         color: black;
-        overflow-x: scroll;
+
         overflow-y: hidden;
         margin: 10px;
         padding: 30px 0px;
         justify-content: space-between;
-        ::-webkit-scrollbar {
-          display: none;
-        }
-        
+        position: relative;
       `}
     >
       <div
+        ref={carousel}
         className={css`
-        display:flex;
+          display: flex;
+          overflow-x: scroll;
+          ::-webkit-scrollbar {
+            display: none;
+          }
         `}
       >
         {data.map((slide, index) => (
-          <Slide key={index} data={slide}></Slide>
+          <Slide key={index} data={slide} id={index}></Slide>
         ))}
+      </div>
+      <div
+        className={css`
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <button onClick={scrollLeft}>Left</button>
+        <div
+          className={css`width:auto;width: -webkit-fill-available;
+}`}
+        ></div>
+        <button onClick={scrollRight}>Right</button>
       </div>
     </div>
   );
