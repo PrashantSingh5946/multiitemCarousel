@@ -10,10 +10,13 @@ export default function AnimatedCarousel() {
   let autoplay = false;
   let step = 2;
   let carouselWidth = 900;
+  let amount = step*slideWidth;
+
+  const [isScrolling,setIsScrolling] = useState(false);
 
   const carousel = useRef();
 
-  const scrollLeft = () => {};
+  const scrollLeft = () => { setIsScrollingLeft(true)};
   const scrollRight = () => {};
 
   let data = [
@@ -25,35 +28,6 @@ export default function AnimatedCarousel() {
     "Slide 6",
     "Slide 7",
   ];
-
-  const generateState = (items, step) => {
-    console.log('No of items'+items+'Step:'+step);
-
-    let state = [];
-    for (let i = 0; i < step; i++) {
-      state.push(-step + i);
-    }
-
-    for (let j = 0;j < items; j++) {
-      state.push(j);
-    }
-
-    for (let k = 0; k < step; k++) {
-        state.push((items+k));
-    }
-
-    return [...state];
-  };
-
-  let visibleItems = parseInt(carouselWidth / slideWidth);
-  let allItems = visibleItems + 2 * step;
-
-  const [state, setState] = useState([]);
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    console.log(generateState(3,step));
-  }, []);
 
   return (
     <div
@@ -71,9 +45,14 @@ export default function AnimatedCarousel() {
           display: flex;
           overflow: hidden;
           background: rgba(255, 255, 255, 0.4);
+          transition:${transitionTime}ms;
+
+          ${isScrolling && `transform:translateX(${amount}px);`}
         `}
       >
-        {}
+        {
+            data.map((item) => <Slide data={item}></Slide>)
+        }
       </div>
       <div
         className={css`
