@@ -10,14 +10,32 @@ export default function AnimatedCarousel() {
   let autoplay = false;
   let step = 2;
   let carouselWidth = 900;
-  let amount = step*slideWidth;
+  let amount = step * slideWidth;
 
-  const [isScrolling,setIsScrolling] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [isLeftScroll, setIsLeftScroll] = useState(false);
+  const [isRightScroll, setIsRightScroll] = useState(false);
 
-  const carousel = useRef();
+  const scrollLeft = () => {
+    setIsScrolling(true);
+    setIsLeftScroll(true);
 
-  const scrollLeft = () => { setIsScrollingLeft(true)};
-  const scrollRight = () => {};
+    setTimeout(() => {
+      //update the state magic
+      setIsLeftScroll(false);
+      setIsScrolling(false);
+    }, transitionTime);
+  };
+  const scrollRight = () => {
+    setIsScrolling(true);
+    setIsRightScroll(true);
+
+    setTimeout(() => {
+      //update the state magic
+      setIsRightScroll(false);
+      setIsScrolling(false);
+    }, transitionTime);
+  };
 
   let data = [
     "Slide 1",
@@ -32,7 +50,6 @@ export default function AnimatedCarousel() {
   return (
     <div
       id="carousel"
-      ref={carousel}
       className={css`
         width: ${carouselWidth}px;
         display: flex;
@@ -45,14 +62,15 @@ export default function AnimatedCarousel() {
           display: flex;
           overflow: hidden;
           background: rgba(255, 255, 255, 0.4);
-          transition:${transitionTime}ms;
+          transition: ${transitionTime}ms;
 
-          ${isScrolling && `transform:translateX(${amount}px);`}
+          ${isScrolling && isLeftScroll && `transform:translateX(${amount}px);`}
+          ${isScrolling && isRightScroll && `transform:translateX(${-amount}px);`}
         `}
       >
-        {
-            data.map((item) => <Slide data={item}></Slide>)
-        }
+        {data.map((item, index) => (
+          <Slide key={index} data={item}></Slide>
+        ))}
       </div>
       <div
         className={css`
