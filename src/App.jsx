@@ -1,11 +1,15 @@
-import { useState } from 'react';
-import './App.css'
-import Carousel from './components/carousel';
+import { useState } from "react";
+import "./App.css";
+import AnimatedCarousel from "./components/animatedCarousel";
+import Carousel from "./components/carousel";
 
 function App() {
   return (
-  <Carousel/>
-  )
+    <>
+      <Carousel />
+      <AnimatedCarousel />
+    </>
+  );
 }
 
-export default App
+export default App;
