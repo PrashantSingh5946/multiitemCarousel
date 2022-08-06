@@ -4,7 +4,7 @@ import Slide from "./slide";
 
 export default function AnimatedCarousel() {
   let height = 100;
-  let slideWidth = 200;
+  let slideWidth = 280 + 20;
   let transitionTime = 500;
   let infiniteScroll = true;
   let autoplay = false;
@@ -15,15 +15,17 @@ export default function AnimatedCarousel() {
   const [isScrolling, setIsScrolling] = useState(false);
   const [isLeftScroll, setIsLeftScroll] = useState(false);
   const [isRightScroll, setIsRightScroll] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [state, setState] = useState([5, 6, 0, 1, 2, 3, 4]);
 
   const scrollLeft = () => {
     setIsScrolling(true);
     setIsLeftScroll(true);
-
     setTimeout(() => {
-      //update the state magic
       setIsLeftScroll(false);
       setIsScrolling(false);
+      //update the state magic
+      setState([3, 4, 5, 6, 0, 1, 2]);
     }, transitionTime);
   };
   const scrollRight = () => {
@@ -31,9 +33,10 @@ export default function AnimatedCarousel() {
     setIsRightScroll(true);
 
     setTimeout(() => {
-      //update the state magic
       setIsRightScroll(false);
       setIsScrolling(false);
+      //update the state magic
+      setState([0, 1, 2, 3, 4, 5, 6]);
     }, transitionTime);
   };
 
@@ -55,6 +58,7 @@ export default function AnimatedCarousel() {
         display: flex;
         position: relative;
         margin-left: 200px;
+        overflow: hidden;
       `}
     >
       <div
@@ -62,14 +66,15 @@ export default function AnimatedCarousel() {
           display: flex;
           overflow: hidden;
           background: rgba(255, 255, 255, 0.4);
-          transition: ${transitionTime}ms;
+          margin-left: ${-amount}px;
+          ${isScrolling && `transition: ${transitionTime}ms;`}
 
-          ${isScrolling && isLeftScroll && `transform:translateX(${amount}px);`}
-          ${isScrolling && isRightScroll && `transform:translateX(${-amount}px);`}
+          ${isScrolling && isLeftScroll && `margin-left:${0}px;`}
+          ${isScrolling && isRightScroll && `margin-left:${-2 * amount}px;`}
         `}
       >
-        {data.map((item, index) => (
-          <Slide key={index} data={item}></Slide>
+        {state.map((index) => (
+          <Slide key={index} data={index}></Slide>
         ))}
       </div>
       <div
