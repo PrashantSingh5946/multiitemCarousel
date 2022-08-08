@@ -78,13 +78,16 @@ export default function AnimatedCarousel() {
   const scrollLeft = () => {
     setIsScrolling(true);
     setIsLeftScroll(true);
+
     setTimeout(() => {
       setIsLeftScroll(false);
       setIsScrolling(false);
       //update the index
-      setActiveIndex(activeIndex);
+      setActiveIndex((activeIndex-step)>=0?(activeIndex-step):((activeIndex-step)%data.length)+data.length);
     }, transitionTime);
   };
+
+
   const scrollRight = () => {
     setIsScrolling(true);
     setIsRightScroll(true);
